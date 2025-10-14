@@ -56,14 +56,9 @@ useEffect(() => {
           style: "destructive",
           onPress: async () => {
             try {
-              const token = await AsyncStorage.getItem("token");
-              const response = await fetch(`${API_BASE_URL}/eliminarMedico/${id}`, {
+              const response = await fetchWithAuth(`/eliminarMedico/${id}`, {
                 method: "DELETE",
-                headers: {
-                  "Content-Type": "application/json",
-                  "Authorization": `Bearer ${token}`,
-                  Accept: "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
               });
 
               const data = await response.json();

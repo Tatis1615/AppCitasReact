@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Platform, Alert } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { fetchWithAuth } from "../../Src/api";
 import API_BASE_URL from "../../Src/Config";
 
 export default function CrearPaciente({ route, navigation }) {
@@ -28,14 +28,9 @@ export default function CrearPaciente({ route, navigation }) {
     }
 
     try {
-      const token = await AsyncStorage.getItem("token");
-      const response = await fetch(`${API_BASE_URL}/crearPaciente`, {
+      const response = await fetchWithAuth(`/crearPaciente`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-          Accept: "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nombre, apellido, documento, telefono, email, fecha_nacimiento, direccion, password }),
       });
 

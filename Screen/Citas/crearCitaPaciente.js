@@ -54,18 +54,14 @@ export default function CrearCitaPaciente({ route, navigation }) {
         if (email) {
           setPacienteEmail(email);
         } else if (paciente_id) {
-          const token = await AsyncStorage.getItem("token");
-          const res = await fetch(`${API_BASE_URL}/pacientes/${paciente_id}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              Accept: "application/json",
-            },
-          });
-          const data = await res.json();
-          const fetchedEmail = data.email || data.data?.email;
-          if (fetchedEmail) {
-            setPacienteEmail(fetchedEmail);
-            await AsyncStorage.setItem("paciente_email", fetchedEmail);
+          const res = await fetchWithAuth(`/pacientes/${paciente_id}`, { method: "GET" });
+          if (res.ok) {
+            const data = await res.json();
+            const fetchedEmail = data.email || data.data?.email;
+            if (fetchedEmail) {
+              setPacienteEmail(fetchedEmail);
+              await AsyncStorage.setItem("paciente_email", fetchedEmail);
+            }
           }
         }
       } catch (err) {

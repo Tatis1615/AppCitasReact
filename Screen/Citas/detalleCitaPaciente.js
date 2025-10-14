@@ -21,12 +21,8 @@ export default function DetalleCitaPaciente({ route, navigation }) {
   useEffect(() => {
     const fetchDetalles = async () => {
       try {
-        const token = await AsyncStorage.getItem("token");
-
         if (cita?.medico_id) {
-          const res = await fetch(`${API_BASE_URL}/medicos/${cita.medico_id}`, {
-            headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
-          });
+          const res = await fetchWithAuth(`/medicos/${cita.medico_id}`, { method: "GET" });
           if (res.ok) setMedico(await res.json());
         }
         if (cita.consultorios) {

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import API_BASE_URL from "../../Src/Config";
+import { fetchWithAuth } from "../../Src/api";
 
 export default function ListarEspecialidades({ navigation }) {
   const [especialidades, setEspecialidades] = useState([]);
@@ -24,16 +23,7 @@ export default function ListarEspecialidades({ navigation }) {
   useEffect(() => {
     const fetchEspecialidades = async () => {
       try {
-        const token = await AsyncStorage.getItem("token");
-
-        const response = await fetch(`${API_BASE_URL}/listarEspecialidades`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-      });
+        const response = await fetchWithAuth(`/especialidades`, { method: "GET" });
         const data = await response.json();
 
         if (response.ok) {

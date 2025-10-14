@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import ModalSelector from "react-native-modal-selector";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { fetchWithAuth } from "../../Src/api";
 import API_BASE_URL from "../../Src/Config";
 
 export default function CrearMedico({ navigation }) {
@@ -20,15 +20,7 @@ export default function CrearMedico({ navigation }) {
   useEffect(() => {
     const fetchEspecialidades = async () => {
       try {
-        const token = await AsyncStorage.getItem("token");
-        const response = await fetch(`${API_BASE_URL}/listarEspecialidades`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-            Accept: "application/json",
-          },
-        });
+        const response = await fetchWithAuth(`/listarEspecialidades`, { method: "GET" });
 
         if (!response.ok) throw new Error("No se pudieron cargar las especialidades");
         const data = await response.json();
@@ -41,15 +33,7 @@ export default function CrearMedico({ navigation }) {
 
     const fetchConsultorios = async () => {
       try {
-        const token = await AsyncStorage.getItem("token");
-        const response = await fetch(`${API_BASE_URL}/listarConsultorios`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-            Accept: "application/json",
-          },
-        });
+        const response = await fetchWithAuth(`/listarConsultorios`, { method: "GET" });
 
         if (!response.ok) throw new Error("No se pudieron cargar los consultorios");
         const data = await response.json();
@@ -77,15 +61,9 @@ export default function CrearMedico({ navigation }) {
     }
 
     try {
-      const token = await AsyncStorage.getItem("token");
-
-      const response = await fetch(`${API_BASE_URL}/crearMedico`, {
+      const response = await fetchWithAuth(`/crearMedico`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-          Accept: "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           especialidad_id,
           consultorio_id,

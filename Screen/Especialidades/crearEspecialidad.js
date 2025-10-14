@@ -1,39 +1,32 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import API_BASE_URL from "../../Src/Config";
+import { fetchWithAuth } from "../../Src/api";
 
 export default function CrearEspecialidad({ navigation }) {
   const [nombre_e, setNombre] = useState("");
 
   const handleCrear = async () => {
     if (!nombre_e) {
-      alert("Por favor completa todos los campos");
+      Alert.alert("Falta información", "Por favor completa todos los campos");
       return;
     } 
 
     try {
-      const token = await AsyncStorage.getItem("token");
-
-      const response = await fetch(`${API_BASE_URL}/crearEspecialidad`, {
+      const response = await fetchWithAuth(`/crearEspecialidad`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-          Accept: "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nombre_e }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        alert("Éxito", "Especialidad creada correctamente");
+        Alert.alert("Éxito", "Especialidad creada correctamente");
         navigation.navigate("ListarEspecialidades");
       } else {
         console.log("Errores:", data);
-        alert("Error", data.message || "No se pudo crear la especialidad");
+        Alert.alert("Error", data.message || "No se pudo crear la especialidad");
       }
     } catch (error) {
       console.error("Error en crear especialidad:", error);

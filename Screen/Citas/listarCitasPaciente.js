@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator, Platform, Alert } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import API_BASE_URL from "../../Src/Config";
+import { fetchWithAuth } from "../../Src/api";
 
 export default function ListarCitasPaciente({ navigation }) {
   const [citas, setCitas] = useState([]);
@@ -24,9 +24,7 @@ export default function ListarCitasPaciente({ navigation }) {
 
         let userEmail = null;
         try {
-          const meRes = await fetch(`${API_BASE_URL}/me`, {
-            headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
-          });
+          const meRes = await fetchWithAuth(`/me`, { method: "GET" });
           if (meRes.ok) {
             const meJson = await meRes.json();
             const user = meJson.user ?? meJson;
@@ -41,10 +39,7 @@ export default function ListarCitasPaciente({ navigation }) {
           console.warn("Error fetching /me:", e);
         }
 
-        const res = await fetch(`${API_BASE_URL}/listarCitasPaciente`, {
-          method: "GET",
-          headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
-        });
+        const res = await fetchWithAuth(`/listarCitasPaciente`, { method: "GET" });
 
         const json = await res.json().catch(() => ({}));
         console.log("listarCitasPaciente response:", json);

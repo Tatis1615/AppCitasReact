@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import API_BASE_URL from "../../Src/Config";
+import { fetchWithAuth } from "../../Src/api";
 
 export default function DetalleCitaMedico({ route, navigation }) {
   const params = route.params || {};
@@ -16,12 +15,8 @@ export default function DetalleCitaMedico({ route, navigation }) {
   useEffect(() => {
     const fetchDetalles = async () => {
       try {
-        const token = await AsyncStorage.getItem("token");
-
         if (cita?.paciente_id) {
-          const res = await fetch(`${API_BASE_URL}/pacientes/${cita.paciente_id}`, {
-            headers: { Authorization: `Bearer ${token}`, Accept: "application/json" },
-          });
+          const res = await fetchWithAuth(`/pacientes/${cita.paciente_id}`, { method: "GET" });
           if (res.ok) setPaciente(await res.json());
         }
 
@@ -54,20 +49,12 @@ export default function DetalleCitaMedico({ route, navigation }) {
         {
           text: "Eliminar",
           style: "destructive",
-          onPress: async () => {
+            onPress: async () => {
             try {
-              const token = await AsyncStorage.getItem("token");
-              const url = `${API_BASE_URL}/eliminarCita/${citaId}`;
+              const url = `/eliminarCita/${citaId}`;
               console.log("DELETE ->", url);
 
-              const response = await fetch(url, {
-                method: "DELETE",
-                headers: {
-                  "Content-Type": "application/json",
-                  "Authorization": `Bearer ${token}`,
-                  Accept: "application/json",
-                },
-              });
+              const response = await fetchWithAuth(url, { method: "DELETE", headers: { "Content-Type": "application/json" } });
 
               let serverBody = {};
               try {

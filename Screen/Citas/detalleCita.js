@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import API_BASE_URL from "../../Src/Config";
+import { fetchWithAuth } from "../../Src/api";
 
 export default function DetalleCita({ route, navigation }) {
   const { id } = route.params;
@@ -14,15 +13,7 @@ export default function DetalleCita({ route, navigation }) {
   useEffect(() => {
     const fetchCita = async () => {
       try {
-        const token = await AsyncStorage.getItem("token");
-        const response = await fetch(`${API_BASE_URL}/citas/${id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
-        });
+        const response = await fetchWithAuth(`/citas/${id}`, { method: "GET" });
 
         if (!response.ok) throw new Error("No se pudo cargar la cita");
 
@@ -30,15 +21,7 @@ export default function DetalleCita({ route, navigation }) {
         setCita(data);
 
         if (data.paciente_id) {
-          const resPaciente = await fetch(
-            `${API_BASE_URL}/pacientes/${data.paciente_id}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: "application/json",
-              },
-            }
-          );
+          const resPaciente = await fetchWithAuth(`/pacientes/${data.paciente_id}`, { method: "GET" });
           if (resPaciente.ok) {
             const paciente = await resPaciente.json();
             setPacienteNombre(paciente.nombre);
@@ -46,15 +29,7 @@ export default function DetalleCita({ route, navigation }) {
         }
 
         if (data.medico_id) {
-          const resMedico = await fetch(
-            `${API_BASE_URL}/medicos/${data.medico_id}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: "application/json",
-              },
-            }
-          );
+          const resMedico = await fetchWithAuth(`/medicos/${data.medico_id}`, { method: "GET" });
           if (resMedico.ok) {
             const medico = await resMedico.json();
             setMedicoNombre(medico.nombre_m);
@@ -62,15 +37,7 @@ export default function DetalleCita({ route, navigation }) {
         }
 
         if (data.consultorio_id) {
-          const resConsultorio = await fetch(
-            `${API_BASE_URL}/consultorios/${data.consultorio_id}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: "application/json",
-              },
-            }
-          );
+          const resConsultorio = await fetchWithAuth(`/consultorios/${data.consultorio_id}`, { method: "GET" });
           if (resConsultorio.ok) {
             const consultorio = await resConsultorio.json();
             setConsultorioNumero(consultorio.numero);

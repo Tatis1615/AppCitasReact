@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { fetchWithAuth } from "../../Src/api";
 import API_BASE_URL from "../../Src/Config";
 
@@ -9,7 +8,7 @@ export default function DetalleEspecialidad({ route, navigation }) {
   const [ especialidad, setEspecialidad ] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  
+
   useEffect(() => {
     const fetchEspecialidad = async () => {
       try {
@@ -54,14 +53,9 @@ export default function DetalleEspecialidad({ route, navigation }) {
           style: "destructive",
           onPress: async () => {
             try {
-              const token = await AsyncStorage.getItem("token");
-              const response = await fetch(`${API_BASE_URL}/eliminarEspecialidad/${id}`, {
+              const response = await fetchWithAuth(`/eliminarEspecialidad/${id}`, {
                 method: "DELETE",
-                headers: {
-                  "Content-Type": "application/json",
-                  "Authorization": `Bearer ${token}`,
-                  Accept: "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
               });
 
               const data = await response.json();
@@ -75,7 +69,7 @@ export default function DetalleEspecialidad({ route, navigation }) {
               }
             } catch (error) {
               console.error("Error eliminando especialidad:", error);
-              Alert.alert("Error de conexión con el servidor");
+              Alert.alert("Error de conexi\u00f3n con el servidor");
             }
           },
         },

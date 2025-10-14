@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { fetchWithAuth } from "../../Src/api";
 import API_BASE_URL from "../../Src/Config";
 
 export default function DetallePaciente({ route, navigation }) {
@@ -11,15 +11,7 @@ export default function DetallePaciente({ route, navigation }) {
   useEffect(() => {
     const fetchPaciente = async () => {
       try {
-        const token = await AsyncStorage.getItem("token");
-        const response = await fetch(`${API_BASE_URL}/pacientes/${id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
-            Accept: "application/json",
-          },
-        });
+        const response = await fetchWithAuth(`/pacientes/${id}`, { method: "GET" });
 
         if (!response.ok) throw new Error("No se pudo cargar el paciente");
 
@@ -48,14 +40,9 @@ export default function DetallePaciente({ route, navigation }) {
           style: "destructive",
           onPress: async () => {
             try {
-              const token = await AsyncStorage.getItem("token");
-              const response = await fetch(`${API_BASE_URL}/eliminarPaciente/${id}`, {
+              const response = await fetchWithAuth(`/eliminarPaciente/${id}`, {
                 method: "DELETE",
-                headers: {
-                  "Content-Type": "application/json",
-                  "Authorization": `Bearer ${token}`,
-                  Accept: "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
               });
 
               const data = await response.json();
