@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { fetchWithAuth } from "../../Src/api";
+import API_BASE_URL from "../../Src/Config";
 
 export default function DetalleMedico({ route, navigation }) {
   const { id } = route.params;
@@ -120,6 +122,13 @@ useEffect(() => {
 
         <Text style={styles.label}>Edad:</Text>
         <Text style={styles.value}>{medico.edad}</Text>
+
+        <Text style={styles.label}>Consultorio:</Text>
+        <Text style={styles.value}>
+          {medico?.consultorio
+            ? `Cons. ${medico.consultorio.numero} (${medico.consultorio.ubicacion ?? "s/ubicación"})`
+            : "Sin consultorio"}
+        </Text>
 
         <Text style={styles.label}>Teléfono:</Text>
         <Text style={styles.value}>{medico.telefono}</Text>

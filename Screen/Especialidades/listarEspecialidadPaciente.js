@@ -1,11 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons"; 
 import { fetchWithAuth } from "../../Src/api";
 
 export default function ListarEspecialidadesPaciente({ navigation }) {
   const [especialidades, setEspecialidades] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const obtenerIconoEspecialidad = (nombre) => {
+    const nombreLower = nombre.toLowerCase();
+    if (nombreLower.includes("cardio")) return "heart-outline";
+    if (nombreLower.includes("pedi")) return "happy-outline";
+    if (nombreLower.includes("derma")) return "bandage-outline";
+    if (nombreLower.includes("odont") || nombreLower.includes("dental")) return "medkit-outline";
+    if (nombreLower.includes("psico")) return "brain-outline";
+    if (nombreLower.includes("gine")) return "female-outline";
+    if (nombreLower.includes("trauma")) return "body-outline";
+    if (nombreLower.includes("neuro")) return "pulse-outline";
+    return "medkit-outline";
+  };
 
   useEffect(() => {
     const fetchEspecialidades = async () => {
@@ -56,10 +70,16 @@ export default function ListarEspecialidadesPaciente({ navigation }) {
         data={especialidades}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.card}
-          >
-            <Text style={styles.cardTitle}>{item.nombre_e}</Text>
+          <TouchableOpacity style={styles.card}>
+            <View style={styles.cardContent}>
+              <Ionicons
+                name={obtenerIconoEspecialidad(item.nombre_e)}
+                size={26}
+                color="#e38ea8"
+                style={{ marginRight: 12 }}
+              />
+              <Text style={styles.cardTitle}>{item.nombre_e}</Text>
+            </View>
           </TouchableOpacity>
         )}
         ListEmptyComponent={
@@ -91,20 +111,6 @@ const styles = StyleSheet.create({
     color: "#e38ea8",
     textAlign: "center",
   },
-  button: {
-    backgroundColor: "#f7b2c4",
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 25,
-    alignItems: "center",
-    marginBottom: 20,
-    marginTop: 15,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
   card: {
     padding: 15,
     marginVertical: 6,
@@ -118,14 +124,13 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
+  cardContent: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   cardTitle: {
     fontWeight: "bold",
     fontSize: 16,
     color: "#333",
   },
-  cardSubtitle: {
-    color: "#555",
-    marginTop: 3,
-  },
 });
-

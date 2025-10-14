@@ -1,11 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import API_BASE_URL from "../../Src/Config";
 
 export default function ListarEspecialidades({ navigation }) {
   const [especialidades, setEspecialidades] = useState([]);
   const [loading, setLoading] = useState(true);
+
+    const obtenerIconoEspecialidad = (nombre) => {
+      const nombreLower = nombre.toLowerCase();
+      if (nombreLower.includes("cardio")) return "heart-outline";
+      if (nombreLower.includes("pedi")) return "happy-outline";
+      if (nombreLower.includes("derma")) return "bandage-outline";
+      if (nombreLower.includes("odont") || nombreLower.includes("dental")) return "medkit-outline";
+      if (nombreLower.includes("psico")) return "brain-outline";
+      if (nombreLower.includes("gine")) return "female-outline";
+      if (nombreLower.includes("trauma")) return "body-outline";
+      if (nombreLower.includes("neuro")) return "pulse-outline";
+      return "medkit-outline";
+    };
 
   useEffect(() => {
     const fetchEspecialidades = async () => {
@@ -54,11 +68,16 @@ export default function ListarEspecialidades({ navigation }) {
         data={especialidades}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() => navigation.navigate("DetalleEspecialidad", { id: item.id })}
-          >
-            <Text style={styles.cardTitle}>{item.nombre_e}</Text>
+          <TouchableOpacity style={styles.card}>
+            <View style={styles.cardContent}>
+              <Ionicons
+                name={obtenerIconoEspecialidad(item.nombre_e)}
+                size={26}
+                color="#e38ea8"
+                style={{ marginRight: 12 }}
+              />
+              <Text style={styles.cardTitle}>{item.nombre_e}</Text>
+            </View>
           </TouchableOpacity>
         )}
         ListEmptyComponent={
@@ -132,6 +151,10 @@ const styles = StyleSheet.create({
   cardSubtitle: {
     color: "#555",
     marginTop: 3,
+  },
+  cardContent: {
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
 

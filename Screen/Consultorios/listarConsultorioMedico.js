@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import API_BASE_URL from "../../Src/Config"; 
 
 export default function ListarConsultoriosMedico({ navigation }) {
@@ -55,11 +56,22 @@ export default function ListarConsultoriosMedico({ navigation }) {
         data={consultorios}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.card}
-          >
-            <Text style={styles.cardTitle}>Consultorio N° {item.numero}</Text>
-            <Text style={styles.cardSubtitle}>Ubicación: {item.ubicacion}</Text>
+          <TouchableOpacity style={styles.card}>
+            <View style={styles.cardContent}>
+              <Ionicons
+                name="business-outline"
+                size={28}
+                color="#e38ea8"
+                style={{ marginRight: 12 }}
+              />
+              <View>
+                <Text style={styles.cardTitle}>Consultorio N° {item.numero}</Text>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Ionicons name="location-outline" size={16} color="#888" style={{ marginRight: 4 }} />
+                  <Text style={styles.cardSubtitle}>{item.ubicacion}</Text>
+                </View>
+              </View>
+            </View>
           </TouchableOpacity>
         )}
         ListEmptyComponent={
@@ -128,5 +140,9 @@ const styles = StyleSheet.create({
   cardSubtitle: {
     color: "#555",
     marginTop: 3,
+  },
+  cardContent: {
+    flexDirection: "row",
+    alignItems: "center",
   },
 });

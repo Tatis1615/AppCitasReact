@@ -103,8 +103,6 @@ export default function ListarCitasMedico({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.title}>Lista de mis citas médicas</Text>
 
-      {/** Botón 'Datos adicionales' eliminado para doctores **/}
-
       {citas.length === 0 ? (
         <Text style={styles.warningText}>
           {isMedico ? "No tienes citas registradas" : "No estás registrado como médico"}
@@ -123,7 +121,7 @@ export default function ListarCitasMedico({ navigation }) {
                 <Ionicons
                   name="person-circle-outline"
                   size={28}
-                  color="#ffb6c1"
+                  color="#e38ea8"
                   style={{ marginRight: 10 }}
                 />
                 <View>

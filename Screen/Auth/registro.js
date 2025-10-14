@@ -24,6 +24,11 @@ export default function Registro({ navigation }) {
       return;
     }
 
+    if (password.length < 8) {
+      Alert.alert("Contraseña débil", "La contraseña debe tener mínimo 8 caracteres");
+      return;
+    }
+
     try {
       const token = await AsyncStorage.getItem("token");
       const response = await fetch(`${API_BASE_URL}/crearPaciente`, {
@@ -39,14 +44,14 @@ export default function Registro({ navigation }) {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Paciente creado correctamente");
+        Alert.alert("Éxito", "Paciente creado correctamente");
         navigation.navigate("Login");
       } else {
-        alert((data.message || "No se pudo crear el paciente"));
+        Alert.alert("Error", data.message || "No se pudo crear el paciente");
       }
     } catch (error) {
       console.error("Error en crear paciente:", error);
-      alert("Hubo un problema al conectar con el servidor");
+      Alert.alert("Error", "Hubo un problema al conectar con el servidor");
     }
   };
 
@@ -120,6 +125,8 @@ export default function Registro({ navigation }) {
         value={email} 
         onChangeText={setEmail} 
         keyboardType="email-address" 
+        autoCapitalize="none" 
+        autoCorrect={false}
         />
 
         <TextInput
@@ -128,6 +135,8 @@ export default function Registro({ navigation }) {
           value={password}
           onChangeText={setPassword}
           secureTextEntry
+          autoCapitalize="none" 
+          autoCorrect={false}  
         />
 
       <TouchableOpacity style={styles.button} onPress={handleRegister}>

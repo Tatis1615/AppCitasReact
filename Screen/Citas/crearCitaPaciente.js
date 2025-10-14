@@ -17,7 +17,7 @@ export default function CrearCitaPaciente({ route, navigation }) {
     idMedico: "",
     idConsultorio: "",
     fecha_hora: "",
-    estado: "Pendiente",
+    estado: "pendiente",
     motivo: "",
   });
 
@@ -96,7 +96,8 @@ export default function CrearCitaPaciente({ route, navigation }) {
           paciente_id,
           medico_id: idMedico,
           fecha_hora,
-          estado: form.estado,
+          // Normalizar a minúsculas por validación backend
+          estado: (form.estado || "pendiente").toLowerCase(),
           motivo,
         }),
       });

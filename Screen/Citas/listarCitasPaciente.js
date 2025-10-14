@@ -170,7 +170,7 @@ export default function ListarCitasPaciente({ navigation }) {
                 <Ionicons
                   name="calendar-outline"
                   size={28}
-                  color="#ffb6c1"
+                  color="#e38ea8"
                   style={{ marginRight: 10 }}
                 />
                 <View>
@@ -217,15 +217,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold", 
     color: "#e38ea8", 
     textAlign: "center", 
-  }, 
-  button: { 
-    backgroundColor: "pink",
-    paddingVertical: 12, 
-    paddingHorizontal: 20, 
-    borderRadius: 25, 
-    alignItems: "center", 
-    marginBottom: 250, 
-  }, 
+  },
   buttonText: { 
     color: "white", 
     fontWeight: "bold", 
@@ -297,5 +289,9 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     fontSize: 15,
+  },
+  cardContent: {
+    flexDirection: "row",
+    alignItems: "center",
   },
 });

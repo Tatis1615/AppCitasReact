@@ -82,7 +82,7 @@ export default function DetalleCitaMedico({ route, navigation }) {
 
               if (response.ok) {
                 Alert.alert("Cita eliminada correctamente");
-                navigation.navigate("ListarCitasPaciente");
+                navigation.navigate("ListarCitas");
               } else {
                 const msg = serverBody?.message || "No se pudo eliminar la cita";
                 Alert.alert("Error", msg);
@@ -127,14 +127,23 @@ export default function DetalleCitaMedico({ route, navigation }) {
 
         <Text style={styles.label}>Motivo:</Text>
         <Text style={styles.value}>{cita?.motivo ?? "No disponible"}</Text>
+
+        {cita?.estado === "cancelada" && !!cita?.motivo_cancelacion && (
+          <>
+            <Text style={styles.label}>Motivo de cancelación:</Text>
+            <Text style={styles.value}>{cita.motivo_cancelacion}</Text>
+          </>
+        )}
       </View>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("EditarCitaMedico", { cita })}
-      >
-        <Text style={styles.buttonText}>Editar</Text>
-      </TouchableOpacity>
+      {cita?.estado !== "cancelada" && (
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => navigation.navigate("EditarCitaMedico", { cita })}
+        >
+          <Text style={styles.buttonText}>Editar</Text>
+        </TouchableOpacity>
+      )}
 
       <TouchableOpacity style={[styles.button, styles.deleteButton]} onPress={eliminarCitaPaciente}>
         <Text style={[styles.buttonText, { color: "white" }]}>Eliminar</Text>

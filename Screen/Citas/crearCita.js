@@ -150,17 +150,6 @@ export default function CrearCita({ navigation }) {
         placeholder="Seleccione el médico..."
       />
 
-      {/* Consultorio asignado (solo lectura) */}
-      <Text style={styles.label}>Consultorio asignado:</Text>
-      <TextInput
-        editable={false}
-        style={[styles.input, { color: "#555" }]}
-        value={
-          selectedMedico?.consultorio
-            ? `Consultorio ${selectedMedico.consultorio.numero} — ${selectedMedico.consultorio.ubicacion ?? ''}`
-            : "Sin consultorio"
-        }
-      />
 
       <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
         <Text style={{ color: fechaHora ? "#000" : "#888" }}>

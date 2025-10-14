@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Platform } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Platform, Alert } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -18,7 +18,12 @@ export default function CrearPaciente({ route, navigation }) {
 
   const handleCrear = async () => {
     if (!nombre || !apellido || !documento || !telefono || !email || !fecha_nacimiento || !direccion || !password) {
-      alert(" Por favor completa todos los campos");
+      Alert.alert("Error", "Por favor completa todos los campos");
+      return;
+    }
+
+    if (password.length < 8) {
+      Alert.alert("Contraseña débil", "La contraseña debe tener mínimo 8 caracteres");
       return;
     }
 
@@ -31,20 +36,20 @@ export default function CrearPaciente({ route, navigation }) {
           "Authorization": `Bearer ${token}`,
           Accept: "application/json",
         },
-        body: JSON.stringify({ nombre, apellido, documento, telefono, email, fecha_nacimiento, direccion, password}),
+        body: JSON.stringify({ nombre, apellido, documento, telefono, email, fecha_nacimiento, direccion, password }),
       });
 
       const data = await response.json();
 
       if (response.ok) {
-        alert("Paciente creado correctamente");
+        Alert.alert("Éxito", "Paciente creado correctamente");
         navigation.navigate("ListarPacientes");
       } else {
-        alert((data.message || "No se pudo crear el paciente"));
+        Alert.alert("Error", data.message || "No se pudo crear el paciente");
       }
     } catch (error) {
       console.error("Error en crear paciente:", error);
-      alert("Hubo un problema al conectar con el servidor");
+      Alert.alert("Error", "Hubo un problema al conectar con el servidor");
     }
   };
 
@@ -60,34 +65,14 @@ export default function CrearPaciente({ route, navigation }) {
     <KeyboardAwareScrollView
       contentContainerStyle={styles.container}
       enableOnAndroid={true}
-      extraScrollHeight={70} 
+      extraScrollHeight={70}
     >
       <Text style={styles.title}>Crear Nuevo Paciente</Text>
 
-      <TextInput 
-      style={styles.input} 
-      placeholder="Nombre" 
-      value={nombre} 
-      onChangeText={setNombre} 
-      />
-      <TextInput 
-      style={styles.input} 
-      placeholder="Apellido" 
-      value={apellido} 
-      onChangeText={setApellido} 
-      />
-      <TextInput 
-      style={styles.input} 
-      placeholder="Documento" 
-      value={documento} 
-      onChangeText={setDocumento} 
-      />
-      <TextInput 
-      style={styles.input} 
-      placeholder="Teléfono" 
-      value={telefono} 
-      onChangeText={setTelefono} 
-      />
+      <TextInput style={styles.input} placeholder="Nombre" value={nombre} onChangeText={setNombre} />
+      <TextInput style={styles.input} placeholder="Apellido" value={apellido} onChangeText={setApellido} />
+      <TextInput style={styles.input} placeholder="Documento" value={documento} onChangeText={setDocumento} />
+      <TextInput style={styles.input} placeholder="Teléfono" value={telefono} onChangeText={setTelefono} />
 
       <TouchableOpacity style={styles.input} onPress={() => setShowDatePicker(true)}>
         <Text style={{ color: fecha_nacimiento ? "#000" : "#707070ff" }}>
@@ -108,19 +93,25 @@ export default function CrearPaciente({ route, navigation }) {
       <TextInput style={styles.input} placeholder="Dirección" value={direccion} onChangeText={setDireccion} />
 
       <TextInput 
-        style={styles.input} 
-        placeholder="Email" 
-        value={email} 
-        onChangeText={setEmail} 
-        keyboardType="email-address" 
+      style={styles.input} 
+      placeholder="Email" 
+      value={email} 
+      onChangeText={setEmail} 
+      keyboardType="email-address" 
+      autoCapitalize="none" 
+      autoCorrect={false}
       />
+
       <TextInput
         style={styles.input}
         placeholder="Contraseña"
         value={password}
         onChangeText={setPassword}
         secureTextEntry
+        autoCapitalize="none" 
+        autoCorrect={false}
       />
+
       <TouchableOpacity style={styles.button} onPress={handleCrear}>
         <Text style={styles.buttonText}>Crear Paciente</Text>
       </TouchableOpacity>
@@ -135,7 +126,7 @@ export default function CrearPaciente({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "#fff0f5", 
+    backgroundColor: "#fff0f5",
     justifyContent: "center",
     alignItems: "center",
     padding: 35,

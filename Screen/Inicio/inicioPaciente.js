@@ -59,7 +59,6 @@ export default function InicioPaciente({ navigation }) {
     }).start();
   }, []);
 
-  // Auto scroll del carrusel
   useEffect(() => {
     const interval = setInterval(() => {
       const nextIndex = (currentIndex + 1) % images.length;
@@ -165,7 +164,7 @@ export default function InicioPaciente({ navigation }) {
             navigation.navigate("Especialidades", { screen: "ListarEspecialidadesPaciente" })
           }
         >
-          <Ionicons name="business-outline" size={42} color="#e38ea8" />
+          <Ionicons name="fitness-outline" size={42} color="#e38ea8" />
           <Text style={styles.cardTitle}>Especialidades</Text>
           <Text style={styles.cardDesc}>Explora nuestras áreas médicas</Text>
         </TouchableOpacity>

@@ -78,7 +78,7 @@ const [userName, setUserName] = useState("");
           style={styles.card}
           onPress={() => navigation.navigate("Especialidades", { screen: "ListarEspecialidades" })}
         >
-          <Ionicons name="business-outline" size={40} color="#e38ea8" />
+          <Ionicons name="fitness-outline" size={40} color="#e38ea8" />
           <Text style={styles.cardTitle}>Especialidades</Text>
           <Text style={styles.cardDesc}>Gestión de especialidades</Text>
         </TouchableOpacity>
@@ -86,7 +86,7 @@ const [userName, setUserName] = useState("");
           style={styles.card}
           onPress={() => navigation.navigate("Admin", { screen: "ListarAdmin" })}
         >
-          <Ionicons name="person-add-outline" size={40} color="#e38ea8" />
+          <Ionicons name="lock-closed-outline" size={40} color="#e38ea8" />
           <Text style={styles.cardTitle}>Admin</Text>
           <Text style={styles.cardDesc}>Ver Administradores</Text>
         </TouchableOpacity>

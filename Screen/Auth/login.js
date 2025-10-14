@@ -70,6 +70,9 @@ export default function Login({ navigation }) {
         placeholderTextColor="#cc6699"
         value={email}
         onChangeText={setEmail}
+        autoCapitalize="none" 
+        autoCorrect={false} 
+        keyboardType="email-address"
       />
 
       <View style={styles.passwordContainer}>
@@ -80,7 +83,10 @@ export default function Login({ navigation }) {
           secureTextEntry={!showPassword}
           value={password}
           onChangeText={setPassword}
+          autoCapitalize="none" 
+          autoCorrect={false}   
         />
+
         <TouchableOpacity
           style={styles.eyeButton}
           onPress={() => setShowPassword(!showPassword)}

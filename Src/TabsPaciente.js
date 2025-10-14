@@ -20,7 +20,7 @@ export default function Tabs() {
           return <Ionicons name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: "#c77d94",
-        tabBarInactiveTintColor: "pink",
+        tabBarInactiveTintColor: "#f8b0c6",
       })}
     >
       <Tab.Screen 

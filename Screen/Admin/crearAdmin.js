@@ -17,6 +17,11 @@ export default function CrearAdmin({ navigation }) {
       return;
     }
 
+    // 🧠 Validar longitud mínima de contraseña
+    if (password.length < 8) {
+      Alert.alert("Contraseña muy corta", "La contraseña debe tener al menos 8 caracteres");
+      return;
+    }
 
     try {
       const token = await AsyncStorage.getItem("token");
@@ -34,15 +39,16 @@ export default function CrearAdmin({ navigation }) {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Éxito", "Admin creado correctamente");
-        navigation.navigate("ListarAdmin");
+        Alert.alert("Éxito", "Administrador creado correctamente", [
+          { text: "Aceptar", onPress: () => navigation.navigate("ListarAdmin") },
+        ]);
       } else {
         console.log("Errores:", data);
-        alert("Error", data.message || "No se pudo crear el admin");
+        Alert.alert("Error", data.message || "No se pudo crear el administrador");
       }
     } catch (error) {
       console.error("Error en crear admin:", error);
-      alert("Error", "Hubo un problema al conectar con el servidor");
+      Alert.alert("Error", "Hubo un problema al conectar con el servidor");
     }
   };
 
@@ -50,21 +56,37 @@ export default function CrearAdmin({ navigation }) {
     <KeyboardAwareScrollView
       contentContainerStyle={styles.container}
       enableOnAndroid={true}
-      extraScrollHeight={50} 
+      extraScrollHeight={50}
     >
       <Text style={styles.title}>Registrar Nuevo Administrador</Text>
 
       {/* Campos básicos */}
-      <TextInput style={styles.input} placeholder="Nombre de usuario" placeholderTextColor="#cc6699" value={name} onChangeText={setName} />
-      <TextInput style={styles.input} placeholder="Correo" placeholderTextColor="#cc6699" value={email} onChangeText={setEmail} />
-      <TextInput style={styles.input} placeholder="Contraseña" placeholderTextColor="#cc6699" secureTextEntry value={password} onChangeText={setPassword} />
+      <TextInput
+        style={styles.input}
+        placeholder="Nombre de usuario"
+        value={name}
+        onChangeText={setName}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Correo"
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+        autoCapitalize="none"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Contraseña"
+        secureTextEntry
+        value={password}
+        onChangeText={setPassword}
+      />
 
       <Dropdown
         style={styles.dropdown}
         containerStyle={styles.dropdownContainer}
-        data={[
-          { label: "Administrador", value: "admin" },
-        ]}
+        data={[{ label: "Administrador", value: "admin" }]}
         labelField="label"
         valueField="value"
         placeholder="Selecciona un rol"
@@ -91,7 +113,7 @@ export default function CrearAdmin({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "#fff0f5", 
+    backgroundColor: "#fff0f5",
     justifyContent: "center",
     alignItems: "center",
     padding: 35,
@@ -140,6 +162,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffffff",
     marginVertical: 8,
   },
-  dropdownContainer: { borderRadius: 12, backgroundColor: "#ffe4ec", borderWidth: 1, borderColor: "#ffb6c1" },
+  dropdownContainer: {
+    borderRadius: 12,
+    backgroundColor: "#ffe4ec",
+    borderWidth: 1,
+    borderColor: "#ffb6c1",
+  },
 });
-
