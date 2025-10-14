@@ -9,6 +9,7 @@ export default function DetalleEspecialidad({ route, navigation }) {
   const [ especialidad, setEspecialidad ] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  
   useEffect(() => {
     const fetchEspecialidad = async () => {
       try {
