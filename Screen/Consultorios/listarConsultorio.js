@@ -56,7 +56,10 @@ export default function ListarConsultorios({ navigation }) {
         data={consultorios}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.card}>
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => navigation.navigate("DetalleConsultorio", { id: item.id })}
+          >
             <View style={styles.cardContent}>
               <Ionicons
                 name="business-outline"

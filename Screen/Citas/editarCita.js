@@ -16,7 +16,7 @@ export default function EditarCita({ route, navigation }) {
 
   const [pacientes, setPacientes] = useState([]);
   const [medicos, setMedicos] = useState([]);
-  const [consultorios] = useState([]); // ya no se usa picker de consultorio
+  const [consultorios] = useState([]); 
 
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
@@ -35,7 +35,6 @@ export default function EditarCita({ route, navigation }) {
 
   useEffect(() => {
     fetchData("listarPacientes", setPacientes, "No se pudieron cargar los pacientes");
-    // Usar /medicos con especialidad + consultorio embebidos
     fetchData("medicos", setMedicos, "No se pudieron cargar los médicos");
   }, []);
 
@@ -46,7 +45,6 @@ export default function EditarCita({ route, navigation }) {
 
   const handleGuardar = async () => {
     try {
-      // Validar consultorio del médico seleccionado
       if (!selectedMedico?.consultorio?.id && !selectedMedico?.consultorio?.numero) {
         return Alert.alert("El médico seleccionado no tiene consultorio asignado. No es posible actualizar la cita.");
       }

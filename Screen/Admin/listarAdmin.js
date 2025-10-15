@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, ActivityIndicator } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Ionicons from "@expo/vector-icons/Ionicons"; // 👈 Importamos los íconos
+import Ionicons from "@expo/vector-icons/Ionicons";
 import API_BASE_URL from "../../Src/Config"; 
 
 export default function ListarAdmin({ navigation }) {

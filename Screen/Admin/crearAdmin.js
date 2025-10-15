@@ -17,7 +17,6 @@ export default function CrearAdmin({ navigation }) {
       return;
     }
 
-    // 🧠 Validar longitud mínima de contraseña
     if (password.length < 8) {
       Alert.alert("Contraseña muy corta", "La contraseña debe tener al menos 8 caracteres");
       return;
@@ -60,7 +59,6 @@ export default function CrearAdmin({ navigation }) {
     >
       <Text style={styles.title}>Registrar Nuevo Administrador</Text>
 
-      {/* Campos básicos */}
       <TextInput
         style={styles.input}
         placeholder="Nombre de usuario"

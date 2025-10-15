@@ -14,12 +14,10 @@ export default function Perfil({ navigation }) {
 
   const mapConsultorioTexto = (medicoObj, consultoriosList) => {
     if (!medicoObj) return "";
-    // 1) Si viene embebido
     const cons = medicoObj.consultorio;
     if (cons && (cons.numero || cons.ubicacion)) {
       return `Consultorio N° ${cons.numero}${cons.ubicacion ? ` - ${cons.ubicacion}` : ""}`;
     }
-    // 2) Buscar por ID en la lista
     const cid = medicoObj.consultorio_id;
     if (cid && Array.isArray(consultoriosList) && consultoriosList.length) {
       const found = consultoriosList.find((c) => String(c.id) === String(cid));
@@ -82,7 +80,6 @@ export default function Perfil({ navigation }) {
         setEspecialidades(lista);
 
         const userRes = await apiRequest("/me");
-        // Pre-cargar consultorios para mapear por id
         let consList = [];
         try {
           const consRes = await apiRequest("/listarConsultorios");
@@ -91,7 +88,7 @@ export default function Perfil({ navigation }) {
         } catch (e) {
           console.log("Perfil: no se pudo cargar listarConsultorios (no bloqueante)", e);
         }
-        const currentUser = userRes.user || userRes; // fallback por si el backend retorna el user directo
+        const currentUser = userRes.user || userRes; 
         const roleOrTipo = currentUser?.tipo || currentUser?.role;
         const normalizedUser = { ...currentUser, role: roleOrTipo };
         setUser(normalizedUser);
@@ -117,11 +114,9 @@ export default function Perfil({ navigation }) {
               ...m.data,
               especialidad_id: m.data.especialidad_id?.toString() || "",
             });
-          // Preparar texto de consultorio guiándonos por ListarConsultorios (numero + ubicacion)
           try {
             const mapped = mapConsultorioTexto(m?.data, consList);
             setConsultorioTexto(mapped);
-            // Si sigue vacío y hay consultorio_id, último intento: fetch detalle (no siempre necesario)
             if (!mapped && m?.data?.consultorio_id) {
               try {
                 const consDet = await apiRequest(`/consultorios/${m.data.consultorio_id}`);
@@ -155,9 +150,8 @@ export default function Perfil({ navigation }) {
     try {
       if (!user) return Alert.alert("Error", "Usuario no cargado");
 
-      const tipo = user?.tipo || user?.role; // user|paciente|medico
+      const tipo = user?.tipo || user?.role; 
 
-      // Derivar nombre/apellido si solo hay `name`
       const splitName = (full) => {
         if (!full) return { first: "", last: "" };
         const parts = full.trim().split(/\s+/);
@@ -197,14 +191,11 @@ export default function Perfil({ navigation }) {
           password: userInfo.password || undefined,
           edad: medicoData.edad || undefined,
           telefono: medicoData.telefono || undefined,
-          // especialidad_id no editable desde UI; no enviarlo para evitar cambios
         };
       }
 
-      // PUT /api/perfil (endpoint consistente en backend)
       const result = await apiRequest("/perfil", "PUT", payload);
 
-      // Si cambió el email u otros datos dependen del session state, refrescar desde /me
       try {
         const me = await apiRequest("/me");
         const currentUser = me.user || me;
@@ -216,7 +207,6 @@ export default function Perfil({ navigation }) {
           email: normalizedUser.email || "",
           password: "",
         });
-        // Re-cargar datos específicos por email si aplica
         if (normalizedUser.role === "paciente") {
           const p = await apiRequest(
             `/pacientePorEmail/${encodeURIComponent(normalizedUser.email)}`
@@ -263,7 +253,6 @@ export default function Perfil({ navigation }) {
     } catch (err) {
       console.error("Perfil handleSave error:", err);
       if (err.status === 422 && err.details && err.details.errors) {
-        // Mostrar detalles de validación
         const messages = Object.entries(err.details.errors)
           .map(([field, msgs]) => `• ${field}: ${[].concat(msgs).join(", ")}`)
           .join("\n");

@@ -92,7 +92,6 @@ export default function CrearCitaPaciente({ route, navigation }) {
           paciente_id,
           medico_id: idMedico,
           fecha_hora,
-          // Normalizar a minúsculas por validación backend
           estado: (form.estado || "pendiente").toLowerCase(),
           motivo,
         }),

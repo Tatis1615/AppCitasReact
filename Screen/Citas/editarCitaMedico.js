@@ -6,7 +6,6 @@ import { fetchWithAuth } from "../../Src/api";
 export default function EditarCitaMedico({ route, navigation }) {
   const { cita } = route.params;
 
-  // Campos de solo lectura en UI para el médico
   const [paciente_id] = useState(cita.paciente_id);
   const [medico_id] = useState(cita.medico_id);
   const [consultorio_id] = useState(cita.consultorio_id);
@@ -14,7 +13,6 @@ export default function EditarCitaMedico({ route, navigation }) {
   const [estado, setEstado] = useState(cita.estado);
   const [motivo] = useState(cita.motivo);
 
-  // No permitir cambiar fecha/hora desde pantalla del médico; no se cargan listas
 
   const handleGuardar = async () => {
     try {
@@ -38,7 +36,6 @@ export default function EditarCitaMedico({ route, navigation }) {
     }
   };
 
-  // Handlers de fecha/hora eliminados; no aplican para médico
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -66,7 +63,6 @@ export default function EditarCitaMedico({ route, navigation }) {
         value={fecha_hora}
       />
 
-      {/** Selectores de fecha/hora eliminados: el médico no puede modificarlos **/}
 
       <Text style={styles.label}>Estado:</Text>
       <SelectInput
@@ -102,7 +98,6 @@ export default function EditarCitaMedico({ route, navigation }) {
     </ScrollView>
   );
 
-  // 🧩 Subcomponente: Selector reutilizable
   function SelectInput({ data, value, onChange, placeholder }) {
     return (
       <ModalSelector

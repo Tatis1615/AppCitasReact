@@ -81,7 +81,6 @@ export default function ListarConsultoriosMedico({ navigation }) {
         }
       />
       
-      {/** El médico no puede crear consultorios; botón removido **/}
     </View>
   );
 }

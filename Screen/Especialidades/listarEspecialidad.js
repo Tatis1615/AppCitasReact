@@ -58,7 +58,9 @@ export default function ListarEspecialidades({ navigation }) {
         data={especialidades}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.card}>
+          <TouchableOpacity style={styles.card}
+          onPress={() => navigation.navigate("DetalleEspecialidad", { id: item.id })}
+          >
             <View style={styles.cardContent}>
               <Ionicons
                 name={obtenerIconoEspecialidad(item.nombre_e)}

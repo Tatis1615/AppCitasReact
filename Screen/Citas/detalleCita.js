@@ -54,8 +54,6 @@ export default function DetalleCita({ route, navigation }) {
     fetchCita();
   }, [id]);
 
-  // Funcionalidad de eliminar cita deshabilitada para administrador
-
   if (loading) {
     return (
       <View style={styles.container}>
@@ -97,7 +95,6 @@ export default function DetalleCita({ route, navigation }) {
         <Text style={styles.value}>{cita.motivo}</Text>
       </View>
 
-      {/** Botones de Editar y Eliminar deshabilitados en panel administrador **/}
 
       {/* Botón Volver */}
       <TouchableOpacity

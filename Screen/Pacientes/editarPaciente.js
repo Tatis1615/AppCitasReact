@@ -122,14 +122,7 @@ export default function EditarPaciente({ route, navigation }) {
           style={styles.input}
           placeholder="Direccion"
         />
-        <Text style={styles.label}>Contraseña:</Text>
-        <TextInput
-          value={password}
-          onChangeText={setPassword}
-          style={styles.input}
-          placeholder="Contraseña"
-          secureTextEntry
-        />  
+ 
       </View>
 
       <TouchableOpacity style={styles.button} onPress={handleGuardar}>

@@ -32,7 +32,6 @@ export default function CrearCita({ navigation }) {
 
   useEffect(() => {
     fetchData("listarPacientes", setPacientes, "Error al cargar pacientes");
-    // Usar /medicos que ya incluye especialidades y consultorio
     fetchData("medicos", setMedicos, "Error al cargar médicos");
   }, []);
 
@@ -51,7 +50,6 @@ export default function CrearCita({ navigation }) {
         return;
       }
 
-      // Validar que el médico tenga consultorio asignado
       if (!selectedMedico?.consultorio?.id && !selectedMedico?.consultorio?.numero) {
         Alert.alert("El médico seleccionado no tiene consultorio asignado. No es posible crear la cita.");
         return;
