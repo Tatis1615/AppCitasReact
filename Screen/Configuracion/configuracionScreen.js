@@ -22,12 +22,12 @@ export default function ConfiguracionMedico() {
   const [vibracionActiva, setVibracionActiva] = useState(true);
 
   useEffect(() => {
-    cargarCitasPaciente();
+    cargarCitasMedico();
   }, []);
 
-  const cargarCitasPaciente = async () => {
+  const cargarCitasMedico = async () => {
     try {
-      const res = await fetchWithAuth(`/listarCitasPaciente`, { method: "GET" });
+      const res = await fetchWithAuth(`/listarCitasMedico`, { method: "GET" });
       const json = await res.json();
       if (res.ok && json.success) {
         setCitas(json.data ?? []);
@@ -54,8 +54,8 @@ export default function ConfiguracionMedico() {
 
       const id = await Notifications.scheduleNotificationAsync({
         content: {
-          title: "Recordatorio de cita medica",
-          body: `Tienes una cita con ${cita.medicos?.nombre_m ?? cita.medico?.nombre_m ?? "un medico"} mañana a las ${fechaCita.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}.`,
+          title: "Recordatorio de cita",
+          body: `Tienes una cita con ${cita.pacientes?.nombre ?? cita.paciente?.nombre ?? "un paciente"} mañana a las ${fechaCita.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}.`,
           sound: sonidoActivo,
           vibrate: vibracionActiva,
           priority: Notifications.AndroidNotificationPriority.HIGH,
@@ -152,7 +152,7 @@ export default function ConfiguracionMedico() {
               <View style={styles.cardHeader}>
                 <Ionicons name="calendar-outline" size={20} color="#f58eb0" />
                 <Text style={[styles.cardTitle, themeStyles.text]}>
-                  {item.medicos?.nombre_m ?? item.medico?.nombre_m ?? "Paciente"}
+                  {item.pacientes?.nombre ?? item.paciente?.nombre ?? "Paciente"}
                 </Text>
               </View>
               <Text style={[styles.cardText, themeStyles.text]}>
