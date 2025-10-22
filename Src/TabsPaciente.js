@@ -5,6 +5,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import InicioStackPaciente from "./Stack/inicioStackPaciente";
 import PerfilStack from "./Stack/perfilStack";
 import CitasStackPaciente from "./Stack/citasStackPaciente";
+import ConfiguracionStackPaciente from "./Stack/configuracionStackPaciente";
 
 const Tab = createBottomTabNavigator();
 
@@ -17,6 +18,7 @@ export default function Tabs() {
           if (route.name === "InicioPaciente") iconName = "home-outline";
           else if (route.name === "CitasPaciente") iconName = "calendar-outline";
           else if (route.name === "Perfil") iconName = "person-outline";
+          else if (route.name === "Configuración") iconName = "settings-outline";
           return <Ionicons name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: "#c77d94",
@@ -39,6 +41,11 @@ export default function Tabs() {
         name="Perfil" 
         component={PerfilStack} 
         options={{ headerShown: false, title: "Perfil usuario" }} 
+      />
+      <Tab.Screen
+        name="Configuración"
+        component={ConfiguracionStackPaciente}
+        options={{ headerShown: false, title: "Ajustes" }}
       />
     </Tab.Navigator>
   );

@@ -1,7 +1,8 @@
 import "react-native-gesture-handler";
-import React from "react";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import * as Notifications from 'expo-notifications';
 
 // Importar pantallas
 import Login from "./Screen/Auth/login";
@@ -13,6 +14,30 @@ import TabsMedico from "./Src/TabsMedico";
 const Stack = createStackNavigator();
 
 export default function App() {
+  useEffect(() => {
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true, // MUestra la notificacion como alerta
+        shouldShowBanner: true, // Muestra notificacion como banner en la parte superior
+        shouldPlaySound: true, // Reproduce sonido
+        shouldSetBadge: false, // Cambia icono de notificacion
+        shouldShowList: true,
+
+      }),
+    });
+
+    const getPermisos = async () => {
+      const { status } = await Notifications.requestPermissionsAsync(); // Acá se recibe el permiso del usuario
+
+      if (status !== 'granted') {
+        alert('Se requieren permisos para recibir notificaciones');
+      }
+    }
+    getPermisos();
+  }, []);
+
+
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
@@ -41,7 +66,6 @@ export default function App() {
           component={TabsMedico} 
           options={{ headerShown: false }} 
         />
-  
       </Stack.Navigator>
     </NavigationContainer>
   );
