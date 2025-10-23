@@ -147,6 +147,7 @@ export default function ConfiguracionMedico() {
         <FlatList
           data={citas}
           keyExtractor={(item) => item.id.toString()}
+          scrollEnabled={false}
           renderItem={({ item }) => (
             <View style={[styles.card, themeStyles.card]}>
               <View style={styles.cardHeader}>
