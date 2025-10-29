@@ -153,7 +153,7 @@ export default function Registro({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "#fff0f5",
+    backgroundColor: "#ffe6f0",
     alignItems: "center",
     padding: 35,
     paddingTop: 50,

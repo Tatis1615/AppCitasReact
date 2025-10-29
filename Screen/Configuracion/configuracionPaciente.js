@@ -41,6 +41,15 @@ export default function ConfiguracionMedico() {
 
   const programarNotificacion = async (cita) => {
     try {
+      const estado = (cita.estado ?? "").toLowerCase();
+      if (estado !== "confirmada") {
+        Alert.alert(
+          "Cita no confirmada",
+          "Solo puedes programar recordatorios para citas confirmadas."
+        );
+        return;
+      }
+
       const fechaCita = new Date(cita.fecha_hora);
       const ahora = new Date();
 
@@ -48,14 +57,24 @@ export default function ConfiguracionMedico() {
       fechaNotificacion.setDate(fechaCita.getDate() - 1);
 
       if (fechaNotificacion <= ahora) {
-        Alert.alert("No se puede programar", "La cita ya está muy próxima o ya pasó.");
+        Alert.alert(
+          "No se puede programar", 
+          "La cita ya está muy próxima o ya pasó."
+        );
         return;
       }
 
       const id = await Notifications.scheduleNotificationAsync({
         content: {
           title: "Recordatorio de cita medica",
-          body: `Tienes una cita con ${cita.medicos?.nombre_m ?? cita.medico?.nombre_m ?? "un medico"} mañana a las ${fechaCita.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}.`,
+          body: `Tienes una cita con ${
+          cita.medicos?.nombre_m ?? 
+          cita.medico?.nombre_m ?? 
+          "un medico"
+          } mañana a las ${fechaCita.toLocaleTimeString([], { 
+            hour: "2-digit", 
+            minute: "2-digit" 
+          })}.`,
           sound: sonidoActivo,
           vibrate: vibracionActiva,
           priority: Notifications.AndroidNotificationPriority.HIGH,
@@ -64,7 +83,9 @@ export default function ConfiguracionMedico() {
       });
 
       setNotificaciones((prev) => [...prev, id]);
-      Alert.alert("Notificación programada", "Se te recordará esta cita un día antes.");
+      Alert.alert("Notificación programada", 
+        "Se te recordará esta cita un día antes."
+      );
     } catch (error) {
       console.error("Error al programar notificación:", error);
     }
@@ -83,7 +104,9 @@ export default function ConfiguracionMedico() {
   const themeStyles = modoOscuro ? darkTheme : lightTheme;
 
   return (
-    <ScrollView style={[styles.container, themeStyles.container]}>
+    <ScrollView style={[styles.container, themeStyles.container]}
+      contentContainerStyle={{ paddingBottom: 100 }}
+    >
       {/* Encabezado */}
       <View style={styles.header}>
         <Ionicons name="settings-outline" size={28} color={themeStyles.icon.color} />

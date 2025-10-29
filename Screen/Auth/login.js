@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import API_BASE_URL from "../../Src/Config";
 
@@ -62,7 +63,7 @@ export default function Login({ navigation }) {
       enableOnAndroid={true}
       extraScrollHeight={50} 
     >
-      <Text style={styles.title}> Iniciar Sesión 🔬</Text>
+      <Text style={styles.title}> Iniciar Sesión ✨</Text>
 
       <TextInput
         style={styles.input}
@@ -91,9 +92,11 @@ export default function Login({ navigation }) {
           style={styles.eyeButton}
           onPress={() => setShowPassword(!showPassword)}
         >
-          <Text style={{ fontSize: 18 }}>
-            {showPassword ? "👀" : "🔒"}
-          </Text>
+          <Ionicons
+            name={showPassword ? "eye-outline" : "eye-off-outline"}
+            size={24}
+            color="#ec688fff"
+          />
         </TouchableOpacity>
       </View>
 
@@ -101,12 +104,13 @@ export default function Login({ navigation }) {
         <Text style={styles.buttonText}>Ingresar</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity
-        style={[styles.button, styles.secondaryButton]}
-        onPress={() => navigation.navigate("Registro")}
-      >
-        <Text style={styles.buttonText}>Registrarse</Text>
-      </TouchableOpacity>
+      <View style={styles.registerContainer}>
+        <Text style={styles.registerText}>¿No tienes cuenta?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Registro")}>
+          <Text style={styles.registerLink}> Regístrate aquí </Text>
+        </TouchableOpacity>
+      </View>
+
     </KeyboardAwareScrollView>
   );
 }
@@ -167,5 +171,27 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 18,
     fontWeight: "600",
+  },
+  eyeButton: {
+    padding: 5,
+  },
+  registerText: {
+    fontSize: 16,
+    color: "#884c5e",
+  },
+  registerLink: {
+    fontSize: 16,
+    color: "#ec688fff",
+    fontWeight: "bold",
+    marginLeft: 6,
+  },
+  registerContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 5,
+    backgroundColor: "#ffe6f0",
+    paddingVertical: 10,
+    borderRadius: 15,
   },
 });
