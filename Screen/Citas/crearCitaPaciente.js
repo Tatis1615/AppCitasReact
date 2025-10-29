@@ -123,9 +123,14 @@ export default function CrearCitaPaciente({ route, navigation }) {
       const finalDate = new Date(tempDate);
       finalDate.setHours(selectedTime.getHours());
       finalDate.setMinutes(selectedTime.getMinutes());
-      const fechaFormateada =
-        finalDate.toISOString().slice(0, 10) + " " + finalDate.toTimeString().slice(0, 5);
+      const year = finalDate.getFullYear();
+      const month = String(finalDate.getMonth() + 1).padStart(2, "0");
+      const day = String(finalDate.getDate()).padStart(2, "0");
+      const hours = String(finalDate.getHours()).padStart(2, "0");
+      const minutes = String(finalDate.getMinutes()).padStart(2, "0");
+      const fechaFormateada = `${year}-${month}-${day} ${hours}:${minutes}`;
       setForm({ ...form, fecha_hora: fechaFormateada });
+
     }
   };
 
