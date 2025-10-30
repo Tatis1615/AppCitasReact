@@ -66,7 +66,7 @@ export default function ConfiguracionMedico() {
       const id = await Notifications.scheduleNotificationAsync({
         content: {
           title: "Recordatorio de cita",
-          body: `Tienes una cita con ${
+          body: `Tienes una cita médica con el paciente${
             cita.pacientes?.nombre ??
             cita.paciente?.nombre ??
             "un paciente"
